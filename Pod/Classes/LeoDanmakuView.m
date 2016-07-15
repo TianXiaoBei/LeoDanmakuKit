@@ -157,6 +157,13 @@
 }
 -(void)resume{
     self.state = LeoDanmakuViewStatePlaying;
+    
+    
+    //stop时channelManager被清空导致不能重新resume,所以应该重新创建一个channelManager
+    if (!self.channelManager) {
+        self.channelManager = [LeoDanmakuChannelManager manager];
+    }
+    
     if (self.fireTimer == nil) {
         _fireTimer = [NSTimer timerWithTimeInterval:self.channelManager.inverval target:self selector:@selector(timeToUpdateView) userInfo:nil repeats:true];
         [[NSRunLoop mainRunLoop] addTimer:_fireTimer forMode:NSRunLoopCommonModes];
